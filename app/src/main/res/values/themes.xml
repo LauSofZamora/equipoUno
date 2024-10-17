@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.EquipoUno" parent="android:Theme.Material.Light.NoActionBar" />
+
+    //Aqui se evita mostrar la toolbar para el splash
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">#000000</item> <!-- Fondo negro -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>
