@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">equipoUno</string>
+    <string name="todo">Texto de ejemplo</string>
+
 </resources>
