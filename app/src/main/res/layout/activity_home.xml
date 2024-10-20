@@ -18,6 +18,14 @@
             android:src="@drawable/wood_background"
             android:scaleType="centerCrop"/>
 
+        <ImageView
+            android:id="@+id/bottleImageView"
+            android:layout_width="380dp"
+            android:layout_height="380dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bottle_image"
+            android:contentDescription="@string/todo"/>
+
         <!-- Aquí puedes agregar otros elementos de UI para tu home -->
 
     </RelativeLayout>
