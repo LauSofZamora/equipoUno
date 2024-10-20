@@ -19,12 +19,21 @@
             android:scaleType="centerCrop"/>
 
         <ImageView
-            android:id="@+id/bottleImageView"
+            android:id="@+id/bottleImage"
             android:layout_width="380dp"
             android:layout_height="380dp"
             android:layout_centerInParent="true"
             android:src="@drawable/bottle_image"
             android:contentDescription="@string/todo"/>
+
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="3"
+            android:textColor="@android:color/white"
+            android:textSize="90sp" />
 
         <!-- Aquí puedes agregar otros elementos de UI para tu home -->
 
