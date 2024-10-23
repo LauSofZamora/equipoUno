@@ -47,33 +47,47 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startBlinkingButton() {
-        blinkHandler = Handler(Looper.getMainLooper())
-        blinkRunnable = object : Runnable {
-            override fun run() {
-                blinkingButton.visibility = if (blinkingButton.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
-                blinkHandler.postDelayed(this, 500) // Cambia cada 500ms
-            }
+        val fadeOut = ObjectAnimator.ofFloat(blinkingButton, "alpha", 1f, 0.5f).apply {
+            duration = 700 // Duración de cada fase de la animación (medio segundo)
         }
-        blinkHandler.post(blinkRunnable) // Iniciar el parpadeo
-    }
 
-    private fun stopBlinkingButton() {
-        blinkHandler.removeCallbacks(blinkRunnable) // Detener el parpadeo
-        blinkingButton.visibility = View.GONE // Ocultar el botón
+        val fadeIn = ObjectAnimator.ofFloat(blinkingButton, "alpha", 0.5f, 1f).apply {
+            duration = 700 // Igual duración para que la transición sea suave
+        }
+
+        // Ejecutar las animaciones en bucle
+        fadeOut.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                if (blinkingButton.visibility == View.VISIBLE) {
+                    fadeIn.start() // Iniciar fadeIn solo si el botón está visible
+                }
+            }
+        })
+
+        fadeIn.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                if (blinkingButton.visibility == View.VISIBLE) {
+                    fadeOut.start() // Iniciar fadeOut solo si el botón está visible
+                }
+            }
+        })
+
+        fadeOut.start() // Iniciar el ciclo con fadeOut
     }
 
     private fun startSpinning() {
         isSpinning = true
-        stopBlinkingButton() // Detener el parpadeo
-        val spinDuration = Random.nextInt(3000, 5000).toLong() // Duración aleatoria entre 3 y 5 segundos
-        val spinAmount = Random.nextFloat() * 720 // Cantidad de giro aleatoria entre 0 y 720 grados
+        blinkingButton.clearAnimation() // Detener cualquier animación en curso
+        blinkingButton.visibility = View.GONE // Ocultar instantáneamente
 
-        // Girar la botella
+        val spinDuration = Random.nextInt(3000, 5000).toLong() // Duración aleatoria
+        val spinAmount = Random.nextFloat() * 2080 + 1200 // Giro entre 360 y 1080 grados
+
         ObjectAnimator.ofFloat(bottleImage, "rotation", spinDirection, spinDirection + spinAmount).apply {
             duration = spinDuration
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    spinDirection += spinAmount // Actualizar dirección de giro
+                    spinDirection = (spinDirection + spinAmount) % 360 // Actualizar dirección
                     showCountdown() // Mostrar cuenta regresiva
                 }
             })
@@ -81,27 +95,27 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-
     private fun showCountdown() {
         val handler = Handler(Looper.getMainLooper())
-        var count = 4 // Iniciar cuenta regresiva en 3
+        var count = 4
+
         timerText.text = count.toString()
-        timerText.visibility = View.VISIBLE // Mostrar texto
+        timerText.visibility = View.VISIBLE
 
         val runnable = object : Runnable {
             override fun run() {
                 if (count > 0) {
                     count--
                     timerText.text = count.toString()
-                    handler.postDelayed(this, 1000) // Esperar 1 segundo antes de repetir
+                    handler.postDelayed(this, 1000)
                 } else {
                     timerText.visibility = View.GONE // Ocultar el texto
-                    isSpinning = false // Permitir que la botella vuelva a girar
                     blinkingButton.visibility = View.VISIBLE // Mostrar el botón de nuevo
-                    startBlinkingButton() // Reiniciar el parpadeo del botón
+                    startBlinkingButton() // Reiniciar el parpadeo
+                    isSpinning = false // Permitir otro giro
                 }
             }
         }
-        handler.post(runnable) // Iniciar la cuenta regresiva
+        handler.post(runnable)
     }
 }
