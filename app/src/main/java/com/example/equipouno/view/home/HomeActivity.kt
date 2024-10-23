@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.equipouno.R
 import kotlin.random.Random
@@ -30,7 +31,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        // Configura la Toolbar
+        val toolbar: Toolbar = findViewById(R.id.customToolbar)
+        setSupportActionBar(toolbar)
+
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         // Conectar los elementos de la UI
         timerText = findViewById(R.id.timerText)

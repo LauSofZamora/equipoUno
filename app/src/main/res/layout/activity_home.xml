@@ -10,6 +10,8 @@
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
 
+        <include layout="@layout/custom_toolbar" />
+
         <ImageView
             android:id="@+id/backgroundImage"
             android:layout_width="match_parent"

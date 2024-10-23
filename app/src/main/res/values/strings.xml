@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">equipoUno</string>
     <string name="todo">Texto de ejemplo</string>
+    <string name="ic_add">Agregar</string>
+    <string name="ic_controller">Mando</string>
+    <string name="ic_share">Compartir</string>
+    <string name="ic_star">Calificar</string>
+    <string name="ic_volume_high">Sonido</string>
+
 
 </resources>
