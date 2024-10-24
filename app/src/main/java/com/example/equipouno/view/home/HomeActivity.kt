@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.media.MediaPlayer
@@ -248,10 +249,24 @@ class HomeActivity : AppCompatActivity() {
                     blinkingButton.visibility = View.VISIBLE // Mostrar el botón de nuevo
                     startBlinkingButton() // Reiniciar el parpadeo
                     isSpinning = false // Permitir otro giro
+                    showCustomDialog() // Mostrar el diálogo
                 }
             }
         }
         handler.post(runnable)
+    }
+
+    private fun showCustomDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_custom) // Usar layout personalizado
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent) // Fondo transparente
+
+        val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)
+        btnDismiss.setOnClickListener {
+            dialog.dismiss() // Cierra el diálogo al hacer clic en el botón
+        }
+
+        dialog.show()
     }
 }
 
