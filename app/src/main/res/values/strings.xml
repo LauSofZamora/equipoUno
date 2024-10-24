@@ -6,6 +6,8 @@
     <string name="ic_share">Compartir</string>
     <string name="ic_star">Calificar</string>
     <string name="ic_volume_high">Sonido</string>
+    <string name="texto_naranja">Pico botella</string>
+    <string name="silencio">Silencio</string>
 
 
 </resources>

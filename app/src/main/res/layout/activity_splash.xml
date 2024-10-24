@@ -22,6 +22,20 @@
             app:lottie_fileName="bottle.json"
             app:lottie_autoPlay="true"
             app:lottie_loop="true" />
+
+        <TextView
+            android:id="@+id/textPicoBotella"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lottieBottle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/texto_naranja"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="40sp"
+            android:textStyle="italic" />
+        
     </RelativeLayout>
+    
 
 </androidx.constraintlayout.widget.ConstraintLayout>

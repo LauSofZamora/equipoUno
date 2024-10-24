@@ -2,6 +2,7 @@
 <androidx.appcompat.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customToolbar"
     android:layout_width="300dp"
     android:layout_height="40dp"
@@ -19,7 +20,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:gravity="center">
+    android:gravity="center"
+        tools:ignore="ExtraText">
 
     <!-- Iconos distribuidos con layout_weight -->
     <ImageView
@@ -38,7 +40,21 @@
         android:layout_weight="1"
         android:src="@drawable/ic_volume_high"
         android:contentDescription="@string/ic_volume_high"
+        android:layout_margin="0dp"
+        android:padding="0dp"
         app:tint="@android:color/holo_orange_dark"/>
+
+        <ImageView
+            android:id="@+id/silencedOverlay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/silencio"
+            android:src="@drawable/ic_volume_off"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            app:tint="@android:color/holo_orange_dark"
+            android:visibility="gone" />
 
     <ImageView
         android:id="@+id/ic_controller"
