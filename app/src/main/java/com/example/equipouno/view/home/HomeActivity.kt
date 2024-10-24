@@ -3,6 +3,7 @@ package com.example.equipouno.view.home
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
     private var spinDirection = 0f
     private lateinit var blinkHandler: Handler
     private lateinit var blinkRunnable: Runnable
+    private var mediaPlayer: MediaPlayer? = null // MediaPlayer para el sonido de fondo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,30 @@ class HomeActivity : AppCompatActivity() {
                 startSpinning()
             }
         }
+
+        // Iniciar el sonido de fondo
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_music) // Archivo de sonido en res/raw
+        mediaPlayer?.isLooping = true // Para que se repita en bucle
+        mediaPlayer?.start() // Iniciar reproducción
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Detener y liberar el MediaPlayer cuando la actividad se destruya
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Pausar el sonido cuando la actividad esté en pausa
+        mediaPlayer?.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reanudar el sonido cuando la actividad vuelva a estar visible
+        mediaPlayer?.start()
     }
 
     private fun startBlinkingButton() {
@@ -124,3 +150,4 @@ class HomeActivity : AppCompatActivity() {
         handler.post(runnable)
     }
 }
+
