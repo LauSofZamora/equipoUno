@@ -1,42 +1,69 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="8dp"
+    android:layout_marginBottom="8dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="353dp"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <!-- Título del reto -->
+
+        <ImageView
+            android:id="@+id/iconReto"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_beer" />
+
         <TextView
-            android:id="@+id/tvReto"
-            android:layout_width="wrap_content"
+            android:id="@+id/descriptionReto2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Reto"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:text=" "
+            android:textColor="#0a0a0a"
+            android:textSize="16sp" />
 
-        <!-- Botones de editar y eliminar -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/btn_edit_reto"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_pencil"
+            android:background="?android:attr/selectableItemBackground" />
 
-            <ImageView
-                android:id="@+id/btnEdit"
-                android:layout_width="49dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_edit" />
-
-            <ImageView
-                android:id="@+id/btnDelete"
-                android:layout_width="42dp"
-                android:layout_height="55dp"
-                android:src="@drawable/ic_delete" />
-        </LinearLayout>
+        <!-- Botón para eliminar reto -->
+        <ImageButton
+            android:id="@+id/btn_delete_reto"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_bin" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#0a0a0a"
+        android:layout_marginVertical="4dp" />
+
+
+
+
+    <TextView
+        android:id="@+id/descriptionReto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:text="Este es un ejemplo de reto 1"
+        android:textColor="#0a0a0a"
+        android:textSize="16sp"
+        tools:ignore="DuplicateIds" />
+
+</LinearLayout>

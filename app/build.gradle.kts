@@ -38,10 +38,12 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -77,4 +79,5 @@ dependencies {
     implementation ("androidx.compose.material3:material3:1.0.0")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.3.0")
     implementation ("androidx.activity:activity-compose:1.7.0")
+
 }
