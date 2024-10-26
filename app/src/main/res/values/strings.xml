@@ -1,14 +1,24 @@
 <resources>
-    <string name="app_name">equipoUno</string>
-    <string name="todo">Texto de ejemplo</string>
-    <string name="ic_add">Agregar</string>
-    <string name="ic_controller">Mando</string>
-    <string name="ic_share">Compartir</string>
-    <string name="ic_star">Calificar</string>
-    <string name="ic_volume_high">Sonido</string>
-    <string name="texto_naranja">Pico botella</string>
-    <string name="silencio">Silencio</string>
-    <string name="add_reto" />
+    <string name="app_name" translatable="false">equipoUno</string>
+    <string name="todo" translatable="false">Texto de ejemplo</string>
+    <string name="ic_add" translatable="false">Agregar</string>
+    <string name="ic_controller" translatable="false">Mando</string>
+    <string name="ic_share" translatable="false">Compartir</string>
+    <string name="ic_star" translatable="false">Calificar</string>
+    <string name="ic_volume_high" translatable="false">Sonido</string>
+    <string name="texto_naranja" translatable="false">Pico botella</string>
+    <string name="silencio" translatable="false">Silencio</string>
+    <string name="add_reto" translatable="false" />
+    <string name="TODO" translatable="false">TODO</string>
+    <string name="bot_n_de_atr_s" translatable="false">Botón de atrás</string>
+    <string name="reglasdel_juego" translatable="false">reglas del juego</string>
+    <string name="c_mo_se_juega" translatable="false">¿Como se juega?</string>
+    <string name="quien_gana" translatable="false">¿Quien Gana?</string>
+    <string name="segundoParrafo" translatable="false">Gana el último jugador que no abandone el juego.</string>
+    <string name="primeroParrafo" translatable="false">Los jugadores forman un círculo y en el centro
+    colocan el dispositivo movil, luego tocan el botón parpadeante para girar la botella.El jugador que señale la
+    botella debe cumplir el reto que lanza la app, de lo contrario abandona el juego.</string>
+
 
 
 </resources>
