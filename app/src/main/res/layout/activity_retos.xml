@@ -13,11 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#2D2D2D"
-    android:titleTextColor="#FF5722"
-    app:navigationIcon="@drawable/ic_arrow_left"
-    app:title=" " />
-
-
+        android:titleTextColor="@android:color/holo_orange_dark"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:title=" " />
 
     <TextView
         android:id="@+id/text_title"
@@ -26,7 +24,7 @@
         android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
         android:text="Retos"
-        android:textColor="#FF5722"
+        android:textColor="@android:color/holo_orange_dark"
         android:textSize="36sp"
         app:layout_anchor="@+id/toolbar"
         app:layout_anchorGravity="top|center" />
@@ -34,7 +32,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRetos"
         android:layout_width="381dp"
-        android:layout_height="441dp"
+        android:layout_height="750dp"
         android:layout_marginTop="?attr/actionBarSize"
         android:padding="16dp"
         android:scrollbars="vertical" />
@@ -47,6 +45,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
         android:tint="#FFFFFF"
-        app:backgroundTint="#FF5722" />
+        app:backgroundTint="@android:color/holo_orange_dark" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

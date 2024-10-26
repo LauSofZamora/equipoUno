@@ -40,13 +40,16 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var blinkRunnable: Runnable
     private var mediaPlayer: MediaPlayer? = null // MediaPlayer para el sonido de fondo
     private var isMuted = false // Variable para rastrear el estado de muteo
+    private var bottleSpinPlayer: MediaPlayer? =
+        null // MediaPlayer para el sonido de la botella girando
+
 
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val start : ImageView = findViewById(R.id.ic_star)
+        val start: ImageView = findViewById(R.id.ic_star)
         start.setOnClickListener {
             openPlayStore()
             animateTouch(start)
@@ -99,14 +102,15 @@ class HomeActivity : AppCompatActivity() {
         }
 
         // Iniciar el sonido de fondo
-        mediaPlayer = MediaPlayer.create(this, R.raw.background_music) // Archivo de sonido en res/raw
+        mediaPlayer =
+            MediaPlayer.create(this, R.raw.background_music) // Archivo de sonido en res/raw
         mediaPlayer?.isLooping = true // Para que se repita en bucle
         mediaPlayer?.start() // Iniciar reproducción
-
     }
 
     private fun openPlayStore() {
-        val playStoreUrl = "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es&pli=1"
+        val playStoreUrl =
+            "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es&pli=1"
         try {
             // Intenta abrir el enlace de la Play Store directamente en el navegador
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(playStoreUrl)))
@@ -140,7 +144,10 @@ class HomeActivity : AppCompatActivity() {
         // Crea el Intent de compartir
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, "App pico botella\nSolo los valientes lo juegan !!\nhttps://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es ")
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "App pico botella\nSolo los valientes lo juegan !!\nhttps://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es "
+            )
         }
         // Verifica si hay aplicaciones disponibles para manejar el Intent
         if (intent.resolveActivity(packageManager) != null) {
@@ -172,15 +179,24 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        // Pausar el sonido cuando la actividad esté en pausa
+
+        // Guardar si la música estaba sonando antes de pausar la actividad
+        wasPlayingBeforePause = mediaPlayer?.isPlaying == true
+
+        // Pausar la música si estaba sonando
         mediaPlayer?.pause()
     }
 
     override fun onResume() {
         super.onResume()
-        // Reanudar el sonido cuando la actividad vuelva a estar visible
-        mediaPlayer?.start()
+
+        // Reanudar la música solo si no está silenciada y estaba sonando antes de la pausa
+        if (!isMuted && wasPlayingBeforePause) {
+            mediaPlayer?.start()
+        }
     }
+
+    private var wasPlayingBeforePause = false // Estado previo del audio
 
     private fun startBlinkingButton() {
         val fadeOut = ObjectAnimator.ofFloat(blinkingButton, "alpha", 1f, 0.5f).apply {
@@ -213,27 +229,56 @@ class HomeActivity : AppCompatActivity() {
 
     private fun startSpinning() {
         isSpinning = true
-        blinkingButton.clearAnimation() // Detener cualquier animación en curso
-        blinkingButton.visibility = View.GONE // Ocultar instantáneamente
+        blinkingButton.clearAnimation() // Detener animación del botón
+        blinkingButton.visibility = View.GONE // Ocultar el botón
 
         val spinDuration = Random.nextInt(3000, 5000).toLong() // Duración aleatoria
-        val spinAmount = Random.nextFloat() * 2080 + 1200 // Giro entre 360 y 1080 grados
+        val spinAmount = Random.nextFloat() * 2080 + 1200 // Grados de giro
 
-        ObjectAnimator.ofFloat(bottleImage, "rotation", spinDirection, spinDirection + spinAmount).apply {
-            duration = spinDuration
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    spinDirection = (spinDirection + spinAmount) % 360 // Actualizar dirección
-                    showCountdown() // Mostrar cuenta regresiva
-                }
-            })
-            start()
+        // Pausar música de fondo si está sonando
+        if (mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.pause()
         }
+
+        playBottleSpinSound() // Reproducir sonido de la botella girando
+
+        ObjectAnimator.ofFloat(bottleImage, "rotation", spinDirection, spinDirection + spinAmount)
+            .apply {
+                duration = spinDuration
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        spinDirection =
+                            (spinDirection + spinAmount) % 360 // Actualizar la dirección
+
+                        stopBottleSpinSound() // Detener sonido de la botella
+
+                        // **Elimina la reanudación automática de la música aquí.**
+                        // Solo se reanuda en el diálogo.
+                        showCountdown() // Mostrar la cuenta regresiva
+                    }
+                })
+                start()
+            }
+    }
+
+        private fun playBottleSpinSound() {
+        if (bottleSpinPlayer == null) {
+            bottleSpinPlayer = MediaPlayer.create(this, R.raw.bottle_spining)
+
+        }
+        bottleSpinPlayer?.start()
+    }
+
+    private fun stopBottleSpinSound() {
+        bottleSpinPlayer?.stop()
+        bottleSpinPlayer?.release() // Liberar el MediaPlayer
+        bottleSpinPlayer = null
+
     }
 
     private fun showCountdown() {
         val handler = Handler(Looper.getMainLooper())
-        var count = 4
+        var count = 3
 
         timerText.text = count.toString()
         timerText.visibility = View.VISIBLE
@@ -249,7 +294,9 @@ class HomeActivity : AppCompatActivity() {
                     blinkingButton.visibility = View.VISIBLE // Mostrar el botón de nuevo
                     startBlinkingButton() // Reiniciar el parpadeo
                     isSpinning = false // Permitir otro giro
-                    showCustomDialog() // Mostrar el diálogo
+
+                    // Mostrar el diálogo después del conteo
+                    showCustomDialog()
                 }
             }
         }
@@ -261,13 +308,28 @@ class HomeActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_custom) // Usar layout personalizado
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent) // Fondo transparente
 
+        // Pausar la música si está sonando al abrir el diálogo
+        wasPlayingBeforeDialog = mediaPlayer?.isPlaying == true // Guardar estado antes de pausar
+        if (mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.pause()
+        }
+
         val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)
         btnDismiss.setOnClickListener {
             dialog.dismiss() // Cierra el diálogo al hacer clic en el botón
         }
 
+        dialog.setOnDismissListener {
+            // Reanudar la música solo si no está silenciada
+            if (!isMuted) {
+                mediaPlayer?.start()
+            }
+        }
+
         dialog.show()
     }
+
+
+    private var wasPlayingBeforeDialog = false // Variable para rastrear el estado antes del diálogo
+
 }
-
-

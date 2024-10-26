@@ -1,43 +1,111 @@
 package com.example.equipouno.view.retos
 
+import RetosAdapter
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.EditText
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.equipouno.databinding.ActivityRetosBinding // Importa el binding generado
+import com.example.equipouno.R
+import com.example.equipouno.database.DatabaseHelper
+import com.example.equipouno.databinding.ActivityRetosBinding
+import com.example.equipouno.model.Reto
+import com.example.equipouno.viewmodel.RetosViewModel
+import com.example.equipouno.viewmodel.RetosViewModelFactory
+import android.content.res.ColorStateList
+import android.graphics.Color
 
 
 class RetosActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRetosBinding // Definimos el binding
+    private lateinit var binding: ActivityRetosBinding
     private lateinit var retosAdapter: RetosAdapter
+
+    private val viewModel: RetosViewModel by viewModels {
+        RetosViewModelFactory(DatabaseHelper(this))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Inicializa el binding
         binding = ActivityRetosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configurar Toolbar personalizada
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
-            // Restablecer el audio si está en ON
-            // restablecerAudio()
+        setupRecyclerView()
+
+        viewModel.retos.observe(this) { retos ->
+            retosAdapter.submitList(retos)
         }
 
-        // Configurar RecyclerView
-        retosAdapter = RetosAdapter()
-        binding.recyclerViewRetos.layoutManager = LinearLayoutManager(this)
-        binding.recyclerViewRetos.adapter = retosAdapter
-
-        // Configurar FloatingActionButton
         binding.fabAddReto.setOnClickListener {
-            // Lanza cuadro de diálogo para agregar reto
-            // mostrarCuadroDialogoAgregarReto()
+            mostrarCuadroDialogoAgregarReto()
         }
     }
-}
 
+    private fun setupRecyclerView() {
+        retosAdapter = RetosAdapter()
+
+        binding.recyclerViewRetos.apply {
+            layoutManager = LinearLayoutManager(this@RetosActivity) // Layout en lista vertical
+            adapter = retosAdapter
+            setHasFixedSize(true) // Mejora el rendimiento si la lista tiene tamaño fijo
+        }
+    }
+
+
+    private fun mostrarCuadroDialogoAgregarReto() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_agregar_reto, null, false)
+
+        val etDescripcionReto = dialogView.findViewById<EditText>(R.id.et_descripcion_reto)
+        val btnGuardarReto = dialogView.findViewById<Button>(R.id.btn_guardar_reto)
+        val btnCancelarReto = dialogView.findViewById<Button>(R.id.btn_cancelar_reto)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false) // Evita que se cierre al tocar fuera del diálogo
+            .create()
+
+        // Colores para los estados del botón Guardar
+        val colorDeshabilitado = ColorStateList.valueOf(Color.GRAY)
+        val colorHabilitado = ColorStateList.valueOf(resources.getColor(android.R.color.holo_orange_dark))
+
+        // Inicialmente, el botón está deshabilitado y en color gris
+        btnGuardarReto.backgroundTintList = colorDeshabilitado
+
+        // Habilitar o deshabilitar el botón según el contenido del EditText
+        etDescripcionReto.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val isNotEmpty = !s.isNullOrEmpty()
+                btnGuardarReto.isEnabled = isNotEmpty
+                btnGuardarReto.backgroundTintList = if (isNotEmpty) colorHabilitado else colorDeshabilitado
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Cerrar el cuadro de diálogo con el botón Cancelar
+        btnCancelarReto.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Guardar el reto al presionar Guardar y actualizar la lista
+        btnGuardarReto.setOnClickListener {
+            val descripcion = etDescripcionReto.text.toString().trim()
+            if (descripcion.isNotEmpty()) {
+                viewModel.agregarReto(descripcion) // Guardar en la base de datos
+                dialog.dismiss() // Cerrar el cuadro de diálogo
+            }
+        }
+
+        dialog.show()
+    }
+
+}
