@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.equipouno.R
 import com.example.equipouno.model.Reto
+import com.example.equipouno.viewmodel.RetosViewModel
 
-class RetosAdapter : ListAdapter<Reto, RetosAdapter.RetoViewHolder>(RetoDiffCallback()) {
+class RetosAdapter(
+    private val viewModel: RetosViewModel,  // Para las operaciones de base de datos
+    private val onEditClick: (Reto) -> Unit  // Para manejar el click de edición
+) : ListAdapter<Reto, RetosAdapter.RetoViewHolder>(RetoDiffCallback()) {
 
     class RetoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconoReto: ImageView = itemView.findViewById(R.id.iconReto)
@@ -20,20 +24,25 @@ class RetosAdapter : ListAdapter<Reto, RetosAdapter.RetoViewHolder>(RetoDiffCall
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RetoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_reto, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_reto, parent, false)
         return RetoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RetoViewHolder, position: Int) {
         val reto = getItem(position)
+
+        // Configurar el texto de la descripción
         holder.descripcionReto.text = reto.descripcion
 
+        // Click en el botón editar
         holder.btnEditar.setOnClickListener {
-            // Lógica para editar reto
+            onEditClick(reto)  // Llama al callback de edición
         }
 
+        // Click en el botón eliminar
         holder.btnEliminar.setOnClickListener {
-            // Lógica para eliminar reto
+            viewModel.eliminarReto(reto)
         }
     }
 }

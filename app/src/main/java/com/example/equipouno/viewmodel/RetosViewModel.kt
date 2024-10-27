@@ -31,4 +31,18 @@ class RetosViewModel(private val dbHelper: DatabaseHelper) : ViewModel() {
         }
     }
 
+    fun editarReto(reto: Reto, nuevaDescripcion: String) {
+        viewModelScope.launch {
+            val retoActualizado = reto.copy(descripcion = nuevaDescripcion)
+            dbHelper.updateReto(retoActualizado)
+            _retos.postValue(dbHelper.obtenerRetos())
+        }
+    }
+
+    fun eliminarReto(reto: Reto) {
+        viewModelScope.launch {
+            dbHelper.deleteReto(reto)
+            _retos.postValue(dbHelper.obtenerRetos())
+        }
+    }
 }

@@ -51,7 +51,12 @@ class RetosActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        retosAdapter = RetosAdapter()
+        retosAdapter = RetosAdapter(
+            viewModel = viewModel,
+            onEditClick = { reto ->
+                mostrarCuadroDialogoEditarReto(reto)
+            }
+        )
 
         binding.recyclerViewRetos.apply {
             layoutManager = LinearLayoutManager(this@RetosActivity) // Layout en lista vertical
@@ -60,6 +65,62 @@ class RetosActivity : AppCompatActivity() {
         }
     }
 
+    private fun mostrarCuadroDialogoEditarReto(reto: Reto) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_editar_reto, null, false)
+
+        val etDescripcionReto = dialogView.findViewById<EditText>(R.id.et_descripcion_reto)
+        val btnGuardarReto = dialogView.findViewById<Button>(R.id.btn_guardar_reto)
+        val btnCancelarReto = dialogView.findViewById<Button>(R.id.btn_cancelar_reto)
+
+        // Establecer la descripción actual del reto
+        etDescripcionReto.setText(reto.descripcion)
+
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        // Configurar el botón Guardar inicialmente (ya que hay texto)
+        btnGuardarReto.isEnabled = true
+        btnGuardarReto.setTextColor(resources.getColor(android.R.color.holo_orange_dark))
+        btnGuardarReto.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+
+        // Monitorear cambios en el texto
+        etDescripcionReto.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val isNotEmpty = !s.isNullOrEmpty()
+                btnGuardarReto.isEnabled = isNotEmpty
+                if (isNotEmpty) {
+                    btnGuardarReto.setTextColor(resources.getColor(android.R.color.holo_orange_dark))
+                    btnGuardarReto.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                } else {
+                    btnGuardarReto.setTextColor(Color.GRAY)
+                    btnGuardarReto.backgroundTintList = ColorStateList.valueOf(Color.LTGRAY)
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Configurar el botón Cancelar
+        btnCancelarReto.backgroundTintList = ColorStateList.valueOf(resources.getColor(android.R.color.holo_orange_dark))
+        btnCancelarReto.setTextColor(Color.WHITE)
+
+        btnCancelarReto.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnGuardarReto.setOnClickListener {
+            val nuevaDescripcion = etDescripcionReto.text.toString().trim()
+            if (nuevaDescripcion.isNotEmpty()) {
+                viewModel.editarReto(reto, nuevaDescripcion)
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
 
     private fun mostrarCuadroDialogoAgregarReto() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_agregar_reto, null, false)

@@ -46,4 +46,26 @@ class DatabaseHelper(context: Context) :
         cursor.close()
         return listaRetos
     }
+
+    fun updateReto(reto: Reto): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("descripcion", reto.descripcion)
+        }
+        return db.update(
+            "Retos",
+            values,
+            "id = ?",
+            arrayOf(reto.id.toString())
+        ) > 0
+    }
+
+    fun deleteReto(reto: Reto): Boolean {
+        val db = this.writableDatabase
+        return db.delete(
+            "Retos",
+            "id = ?",
+            arrayOf(reto.id.toString())
+        ) > 0
+    }
 }
