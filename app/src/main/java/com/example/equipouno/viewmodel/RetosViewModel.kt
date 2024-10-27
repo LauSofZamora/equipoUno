@@ -22,12 +22,16 @@ class RetosViewModel(private val dbHelper: DatabaseHelper) : ViewModel() {
         _retos.value = dbHelper.obtenerRetos()
     }
 
-    // Agregar un nuevo reto a la base de datos
+    // Agregar un nuevo reto a la base de datos y colocarlo al inicio de la lista
     fun agregarReto(descripcion: String) {
         viewModelScope.launch {
             val nuevoReto = Reto(descripcion = descripcion)
             dbHelper.insertReto(nuevoReto) // Inserta en la base de datos
-            _retos.postValue(dbHelper.obtenerRetos()) // Actualiza la lista de retos
+
+            // Obtén la lista actual de retos
+            val listaActual = _retos.value?.toMutableList() ?: mutableListOf()
+            listaActual.add(0, nuevoReto) // Agrega el nuevo reto al inicio
+            _retos.postValue(listaActual) // Actualiza la lista de retos
         }
     }
 
@@ -41,8 +45,14 @@ class RetosViewModel(private val dbHelper: DatabaseHelper) : ViewModel() {
 
     fun eliminarReto(reto: Reto) {
         viewModelScope.launch {
+            // Eliminar el reto de la base de datos
             dbHelper.deleteReto(reto)
-            _retos.postValue(dbHelper.obtenerRetos())
+
+            // Actualizar la lista de retos en _retos
+            val listaActual = _retos.value?.toMutableList()
+            listaActual?.remove(reto) // Eliminar el reto de la lista
+            _retos.postValue(listaActual) // Publicar la lista actualizada
         }
     }
+
 }

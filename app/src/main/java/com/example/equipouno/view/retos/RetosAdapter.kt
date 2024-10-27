@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.equipouno.R
 import com.example.equipouno.model.Reto
 import com.example.equipouno.viewmodel.RetosViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+
 
 class RetosAdapter(
     private val viewModel: RetosViewModel,  // Para las operaciones de base de datos
@@ -51,3 +55,4 @@ class RetoDiffCallback : DiffUtil.ItemCallback<Reto>() {
     override fun areItemsTheSame(oldItem: Reto, newItem: Reto): Boolean = oldItem.id == newItem.id
     override fun areContentsTheSame(oldItem: Reto, newItem: Reto): Boolean = oldItem == newItem
 }
+
