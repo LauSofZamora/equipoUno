@@ -41,11 +41,9 @@ class RetosActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
-// En tu RetosActivity
         viewModel.retos.observe(this) { retos ->
             retosAdapter.submitList(retos)
         }
-
 
         binding.fabAddReto.setOnClickListener {
             mostrarCuadroDialogoAgregarReto()
