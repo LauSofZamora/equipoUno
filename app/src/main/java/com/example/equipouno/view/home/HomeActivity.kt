@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.equipouno.R
+import com.example.equipouno.database.DatabaseHelper
 import com.example.equipouno.view.instrucciones.InstruccionesActivity
 import com.example.equipouno.view.retos.RetosActivity
 import kotlin.random.Random
@@ -42,12 +43,15 @@ class HomeActivity : AppCompatActivity() {
     private var isMuted = false // Variable para rastrear el estado de muteo
     private var bottleSpinPlayer: MediaPlayer? =
         null // MediaPlayer para el sonido de la botella girando
+    private lateinit var dbHelper: DatabaseHelper
 
 
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        dbHelper = DatabaseHelper(this)
 
         val start: ImageView = findViewById(R.id.ic_star)
         start.setOnClickListener {
@@ -313,6 +317,10 @@ class HomeActivity : AppCompatActivity() {
         if (mediaPlayer?.isPlaying == true) {
             mediaPlayer?.pause()
         }
+
+        // Obtener y mostrar el reto aleatorio
+        val txtReto = dialog.findViewById<TextView>(R.id.dialogTitle)
+        txtReto.text = dbHelper.getRandomReto()
 
         val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)
         btnDismiss.setOnClickListener {

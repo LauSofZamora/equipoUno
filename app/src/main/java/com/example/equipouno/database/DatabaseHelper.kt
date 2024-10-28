@@ -10,6 +10,11 @@ import com.example.equipouno.model.Reto
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, "retos.db", null, 1) {
 
+    companion object {
+
+        private const val TABLE_NAME = "Retos"
+    }
+
     override fun onCreate(db: SQLiteDatabase) {
         val createTable = """
             CREATE TABLE retos (
@@ -67,5 +72,39 @@ class DatabaseHelper(context: Context) :
             "id = ?",
             arrayOf(reto.id.toString())
         ) > 0
+    }
+
+    fun getRandomReto(): String {
+        val db = this.readableDatabase
+        var descripcion = "No hay retos disponibles"
+
+        try {
+            // Primero, verificamos cuántos retos hay
+            val countCursor = db.rawQuery("SELECT COUNT(*) FROM $TABLE_NAME", null)
+            if (countCursor.moveToFirst()) {
+                val count = countCursor.getInt(0)
+                if (count > 0) {
+                    // Si hay retos, seleccionamos uno aleatorio
+                    val randomIndex = kotlin.random.Random.nextInt(count)
+                    val cursor = db.rawQuery("""
+                        SELECT descripcion FROM $TABLE_NAME 
+                        LIMIT 1 OFFSET $randomIndex
+                    """.trimIndent(), null)
+
+                    if (cursor.moveToFirst()) {
+                        val descripcionIndex = cursor.getColumnIndex("descripcion")
+                        if (descripcionIndex != -1) {
+                            descripcion = cursor.getString(descripcionIndex)
+                        }
+                    }
+                    cursor.close()
+                }
+            }
+            countCursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return descripcion
     }
 }
