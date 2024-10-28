@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A9A9A9">
+    android:background="#2D2D2D">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#A9A9A9"
+        android:background="#2D2D2D"
         android:title=""
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:text="@string/reglasdel_juego"
             android:textColor="@android:color/holo_orange_dark"
-            android:textSize="18sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:text="@string/c_mo_se_juega"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/toolbar3"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,8 +57,7 @@
         android:layout_height="wrap_content"
         android:text="@string/primeroParrafo"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/tv_como_jugar_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +71,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quien_gana"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/tv_como_jugar_title2"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,13 +84,24 @@
         android:layout_height="wrap_content"
         android:text="@string/segundoParrafo"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/tv_como_jugar_title3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:lottie_fileName="animation.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintTop_toBottomOf="@id/tv_como_jugar_title4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

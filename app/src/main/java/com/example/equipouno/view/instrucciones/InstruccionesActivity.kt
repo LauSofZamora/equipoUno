@@ -7,6 +7,8 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.equipouno.R
 import com.example.equipouno.databinding.ActivityInstruccionesBinding
+import com.airbnb.lottie.LottieAnimationView
+
 
 class InstruccionesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInstruccionesBinding
@@ -23,5 +25,11 @@ class InstruccionesActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             onBackPressed() // Llama a onBackPressed() para regresar a la actividad anterior
         }
+
+        // Inicializa y controla la animación
+        val lottieAnimationView: LottieAnimationView = binding.lottieAnimationView
+        lottieAnimationView.setAnimation("celebration.json") // Archivo JSON desde assets
+        lottieAnimationView.playAnimation() // Inicia la animación
+        lottieAnimationView.loop(true) // Repetir la animación
     }
 }

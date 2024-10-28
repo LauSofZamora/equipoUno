@@ -11,7 +11,7 @@
     <string name="add_reto" translatable="false" />
     <string name="TODO" translatable="false">TODO</string>
     <string name="bot_n_de_atr_s" translatable="false">Botón de atrás</string>
-    <string name="reglasdel_juego" translatable="false">reglas del juego</string>
+    <string name="reglasdel_juego" translatable="false">Reglas del juego</string>
     <string name="c_mo_se_juega" translatable="false">¿Como se juega?</string>
     <string name="quien_gana" translatable="false">¿Quien Gana?</string>
     <string name="segundoParrafo" translatable="false">Gana el último jugador que no abandone el juego.</string>

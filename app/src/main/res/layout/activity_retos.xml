@@ -25,7 +25,8 @@
         android:layout_centerHorizontal="true"
         android:text="Retos"
         android:textColor="@android:color/holo_orange_dark"
-        android:textSize="36sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_anchor="@+id/toolbar"
         app:layout_anchorGravity="top|center" />
 

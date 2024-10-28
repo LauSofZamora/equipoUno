@@ -82,11 +82,6 @@ class RetosActivity : AppCompatActivity() {
             .setCancelable(false)
             .create()
 
-        // Configurar el botón Guardar inicialmente (ya que hay texto)
-        btnGuardarReto.isEnabled = true
-        btnGuardarReto.setTextColor(resources.getColor(android.R.color.holo_orange_dark))
-        btnGuardarReto.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-
         // Monitorear cambios en el texto
         etDescripcionReto.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -94,8 +89,8 @@ class RetosActivity : AppCompatActivity() {
                 val isNotEmpty = !s.isNullOrEmpty()
                 btnGuardarReto.isEnabled = isNotEmpty
                 if (isNotEmpty) {
-                    btnGuardarReto.setTextColor(resources.getColor(android.R.color.holo_orange_dark))
-                    btnGuardarReto.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                    btnGuardarReto.setTextColor(resources.getColor(android.R.color.white))
+                    btnGuardarReto.backgroundTintList = ColorStateList.valueOf(resources.getColor(android.R.color.holo_orange_dark))
                 } else {
                     btnGuardarReto.setTextColor(Color.GRAY)
                     btnGuardarReto.backgroundTintList = ColorStateList.valueOf(Color.LTGRAY)
