@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.equipouno.R
 import com.example.equipouno.model.Reto
+import com.example.equipouno.view.retos.RetosActivity
 import com.example.equipouno.viewmodel.RetosViewModel
 
 class RetosAdapter(
@@ -41,9 +42,11 @@ class RetosAdapter(
         }
 
         // Click en el botón eliminar
+// Click en el botón eliminar
         holder.btnEliminar.setOnClickListener {
-            viewModel.eliminarReto(reto)
+            (holder.itemView.context as? RetosActivity)?.mostrarCuadroDialogoEliminarReto(reto)
         }
+
     }
 }
 
