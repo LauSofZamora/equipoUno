@@ -307,6 +307,7 @@ class HomeActivity : AppCompatActivity() {
         handler.post(runnable)
     }
 
+
     private fun showCustomDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_custom) // Usar layout personalizado
@@ -321,6 +322,7 @@ class HomeActivity : AppCompatActivity() {
         // Obtener y mostrar el reto aleatorio
         val txtReto = dialog.findViewById<TextView>(R.id.dialogTitle)
         txtReto.text = dbHelper.getRandomReto()
+
 
         val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)
         btnDismiss.setOnClickListener {
