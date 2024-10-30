@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customToolbar"
+    android:layout_width="300dp"
+    android:layout_height="40dp"
+    android:background="@drawable/toolbar_background"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:padding="8dp"
+    android:clipToPadding="false"
+    android:elevation="20dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="45dp">
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center"
+        tools:ignore="ExtraText">
+
+    <!-- Iconos distribuidos con layout_weight -->
+    <ImageView
+        android:id="@+id/ic_star"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_star"
+        android:contentDescription="@string/ic_star"
+        app:tint="@android:color/holo_orange_dark"/>
+
+    <ImageView
+        android:id="@+id/ic_volume_high"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_volume_high"
+        android:contentDescription="@string/ic_volume_high"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        app:tint="@android:color/holo_orange_dark"/>
+
+        <ImageView
+            android:id="@+id/silencedOverlay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/silencio"
+            android:src="@drawable/ic_volume_off"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            app:tint="@android:color/holo_orange_dark"
+            android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ic_controller"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_controller"
+        android:contentDescription="@string/ic_controller"
+        app:tint="@android:color/holo_orange_dark" />
+
+    <ImageView
+        android:id="@+id/ic_add"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/ic_add"
+        app:tint="@android:color/holo_orange_dark" />
+
+    <ImageView
+        android:id="@+id/ic_share"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_share"
+        android:contentDescription="@string/ic_share"
+        app:tint="@android:color/holo_orange_dark"/>
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.Toolbar>
