@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220994946014",
+    "project_id": "equipouno-701ba",
+    "storage_bucket": "equipouno-701ba.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220994946014:android:0eb52a615692231f79534f",
+        "android_client_info": {
+          "package_name": "com.example.equipouno"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeIYPsBYDCs59bMhieHUHeSSySH9j0OQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
