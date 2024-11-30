@@ -83,6 +83,17 @@
         android:contentDescription="@string/ic_share"
         app:tint="@android:color/holo_orange_dark"/>
 
+        <ImageView
+            android:id="@+id/ic_logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_logout"
+            android:contentDescription="@string/ic_logout"
+            app:tint="@android:color/holo_orange_dark" />
+
+
+
     </LinearLayout>
 
 </androidx.appcompat.widget.Toolbar>

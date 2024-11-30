@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import com.example.equipouno.R
 import com.example.equipouno.view.home.HomeActivity
+import com.example.equipouno.view.login.LoginActivity
 import com.example.equipouno.viewmodel.SplashViewModel
 
 @SuppressLint("CustomSplashScreen")
@@ -45,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun navigateToHome() {
         Log.d("SplashActivity", "Navigating to HomeActivity")
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }

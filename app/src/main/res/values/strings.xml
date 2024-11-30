@@ -18,7 +18,12 @@
     <string name="primeroParrafo" translatable="false">Los jugadores forman un círculo y en el centro
     colocan el dispositivo movil, luego tocan el botón parpadeante para girar la botella.El jugador que señale la
     botella debe cumplir el reto que lanza la app, de lo contrario abandona el juego.</string>
-
+    <string name="ic_logout">Cerrar sesión</string>
+    <string name="pico_botella">Pico Botella</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="registrarse">Registrarse</string>
 
 
 </resources>
