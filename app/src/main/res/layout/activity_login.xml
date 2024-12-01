@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,7 +8,6 @@
     android:background="@android:color/black"
     android:padding="16dp"
     android:gravity="center">
-
     <!-- Título -->
     <TextView
         android:id="@+id/title"
@@ -22,11 +22,14 @@
     <!-- Campo de Email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_input_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/email"
+        app:hintEnabled="true"
         app:hintTextColor="@android:color/white"
-        app:boxStrokeColor="@android:color/white"
+        app:boxStrokeColor="@color/white_selector"
+        app:boxStrokeWidth="2dp"
         app:boxBackgroundMode="outline">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -36,21 +39,23 @@
             android:inputType="textEmailAddress"
             android:maxLength="40"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+            android:textColorHint="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Campo de Password -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_input_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
         app:hintTextColor="@android:color/white"
-        app:boxStrokeColor="@android:color/white"
+        app:boxStrokeColor="@color/white_selector"
+        app:boxStrokeWidth="2dp"
         app:endIconMode="password_toggle"
         android:layout_marginTop="16dp"
+        app:endIconTint="@android:color/white"
         app:boxBackgroundMode="outline">
-
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_input"
@@ -59,7 +64,7 @@
             android:inputType="numberPassword"
             android:maxLength="10"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+            android:textColorHint="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Botón de Login -->
@@ -79,19 +84,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
         android:text="@string/registrarse"
         android:textColor="#9EA1A1"
         android:textSize="16sp"
-        android:textStyle="normal"
-        android:clickable="true"
-        android:focusable="true" />
-
+        android:textStyle="normal" />
     <!-- Espaciador -->
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
     <!-- Imagen de onda -->
     <ImageView
         android:layout_width="match_parent"
@@ -99,6 +102,4 @@
         android:contentDescription="@string/bot_n_de_atr_s"
         android:src="@drawable/vd_vector"
         android:scaleType="fitXY" />
-
-
 </LinearLayout>

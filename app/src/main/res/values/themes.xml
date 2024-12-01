@@ -11,14 +11,20 @@
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+           <item name="windowActionBar">false</item>
+           <item name="windowNoTitle">true</item>
     </style>
-    <style name="LoginTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="LoginTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorSecondary">@android:color/white</item>
     </style>
 
+    <style name="CustomTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/white_selector</item>
+        <item name="hintTextColor">@android:color/white</item>
+    </style>
 
 </resources>

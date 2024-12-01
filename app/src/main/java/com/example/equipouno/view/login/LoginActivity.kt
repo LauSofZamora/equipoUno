@@ -66,14 +66,14 @@ class LoginActivity : AppCompatActivity() {
         binding.emailInput.addTextChangedListener { enableButtons() }
         binding.passwordInput.addTextChangedListener { enableButtons() }
 
-        // Acción para el botón de "Login"****
+        // Acción para el botón de "Login"
         binding.loginButton.setOnClickListener {
             val email = binding.emailInput.text.toString()
             val pass = binding.passwordInput.text.toString()
             loginUser(email, pass)
         }
 
-        // Acción para el botón de "Registrarse"****
+        // Acción para el botón de "Registrarse"
         binding.tvRegister.setOnClickListener {
             registerUser()
         }
