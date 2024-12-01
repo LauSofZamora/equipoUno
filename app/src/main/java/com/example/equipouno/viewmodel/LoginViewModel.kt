@@ -1,10 +1,10 @@
 package com.example.equipouno.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.equipouno.repository.LoginReposiroty
+import com.example.equipouno.repository.LoginRepository
 
 class LoginViewModel : ViewModel(){
-    private val repository = LoginReposiroty()
+    private val repository = LoginRepository()
 
     fun registerUser(email: String, pass: String, isRegister: (Boolean) -> Unit) {
 

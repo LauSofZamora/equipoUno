@@ -5,12 +5,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.equipouno.R
 import com.example.equipouno.databinding.ActivityLoginBinding
 import com.example.equipouno.view.home.HomeActivity
 import com.example.equipouno.viewmodel.LoginViewModel
@@ -68,14 +66,14 @@ class LoginActivity : AppCompatActivity() {
         binding.emailInput.addTextChangedListener { enableButtons() }
         binding.passwordInput.addTextChangedListener { enableButtons() }
 
-        // Acción para el botón de "Login"
+        // Acción para el botón de "Login"****
         binding.loginButton.setOnClickListener {
             val email = binding.emailInput.text.toString()
             val pass = binding.passwordInput.text.toString()
             loginUser(email, pass)
         }
 
-        // Acción para el botón de "Registrarse"
+        // Acción para el botón de "Registrarse"****
         binding.tvRegister.setOnClickListener {
             registerUser()
         }

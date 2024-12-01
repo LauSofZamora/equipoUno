@@ -2,7 +2,7 @@ package com.example.equipouno.repository;
 
 import com.google.firebase.auth.FirebaseAuth
 
-class LoginReposiroty {
+class LoginRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     fun registerUser(email: String, pass: String, isRegisterComplete: (Boolean) -> Unit) {
