@@ -105,6 +105,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx:21.3.0")
     implementation("com.google.firebase:firebase-firestore-ktx:24.7.0")
+
     //Dagger hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")

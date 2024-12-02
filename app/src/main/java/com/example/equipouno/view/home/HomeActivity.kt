@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.equipouno.R
-import com.example.equipouno.database.DatabaseHelper
 import com.example.equipouno.view.instrucciones.InstruccionesActivity
 import com.example.equipouno.view.login.LoginActivity
 import com.example.equipouno.view.retos.RetosActivity
@@ -44,15 +43,11 @@ class HomeActivity : AppCompatActivity() {
     private var isMuted = false // Variable para rastrear el estado de muteo
     private var bottleSpinPlayer: MediaPlayer? =
         null // MediaPlayer para el sonido de la botella girando
-    private lateinit var dbHelper: DatabaseHelper
 
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-        dbHelper = DatabaseHelper(this)
-
 
         val logoutButton = findViewById<ImageView>(R.id.ic_logout)
         logoutButton.setOnClickListener {
@@ -291,27 +286,34 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showCustomDialog() {
         val dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialog_custom) // Usar layout personalizado
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent) // Fondo transparente
-        // Pausar la música si está sonando al abrir el diálogo
-        wasPlayingBeforeDialog = mediaPlayer?.isPlaying == true // Guardar estado antes de pausar
+        dialog.setContentView(R.layout.dialog_custom)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        // Pausar la música si está sonando
+        wasPlayingBeforeDialog = mediaPlayer?.isPlaying == true
         if (mediaPlayer?.isPlaying == true) {
             mediaPlayer?.pause()
         }
+
         // Obtener y mostrar el reto aleatorio
         val txtReto = dialog.findViewById<TextView>(R.id.dialogTitle)
-        txtReto.text = dbHelper.getRandomReto()
+        viewModel.getRandomReto { reto ->
+            txtReto.text = reto
+        }
+
         val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)
         btnDismiss.setOnClickListener {
-            dialog.dismiss() // Cierra el diálogo al hacer clic en el botón
+            dialog.dismiss()
         }
+
         dialog.setOnDismissListener {
-            // Reanudar la música solo si no está silenciada
+            // Reanudar música si no está silenciada
             if (!isMuted) {
                 mediaPlayer?.start()
             }
         }
         dialog.show()
     }
+
     private var wasPlayingBeforeDialog = false // Variable para rastrear el estado antes del diálogo
 }

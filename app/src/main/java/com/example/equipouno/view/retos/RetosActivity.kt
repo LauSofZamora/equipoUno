@@ -1,6 +1,7 @@
 package com.example.equipouno.view.retos
 
 import RetosAdapter
+import RetosViewModel
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,13 +13,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.equipouno.R
-import com.example.equipouno.database.DatabaseHelper
 import com.example.equipouno.databinding.ActivityRetosBinding
 import com.example.equipouno.model.Reto
-import com.example.equipouno.viewmodel.RetosViewModel
-import com.example.equipouno.viewmodel.RetosViewModelFactory
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.util.Log
 import android.widget.TextView
 
 
@@ -27,9 +26,7 @@ class RetosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRetosBinding
     private lateinit var retosAdapter: RetosAdapter
 
-    private val viewModel: RetosViewModel by viewModels {
-        RetosViewModelFactory(DatabaseHelper(this))
-    }
+    private val viewModel: RetosViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +43,8 @@ class RetosActivity : AppCompatActivity() {
             retosAdapter.submitList(retos)
         }
 
+        viewModel.cargarRetos()
+
         binding.fabAddReto.setOnClickListener {
             mostrarCuadroDialogoAgregarReto()
         }
@@ -53,18 +52,21 @@ class RetosActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         retosAdapter = RetosAdapter(
-            viewModel = viewModel,
             onEditClick = { reto ->
                 mostrarCuadroDialogoEditarReto(reto)
+            },
+            onDeleteClick = { reto ->
+                mostrarCuadroDialogoEliminarReto(reto)
             }
         )
 
         binding.recyclerViewRetos.apply {
-            layoutManager = LinearLayoutManager(this@RetosActivity) // Layout en lista vertical
+            layoutManager = LinearLayoutManager(this@RetosActivity)
             adapter = retosAdapter
-            setHasFixedSize(true) // Mejora el rendimiento si la lista tiene tamaño fijo
+            setHasFixedSize(true)
         }
     }
+
 
     private fun mostrarCuadroDialogoEditarReto(reto: Reto) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_editar_reto, null, false)

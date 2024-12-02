@@ -1,3 +1,4 @@
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +10,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.equipouno.R
 import com.example.equipouno.model.Reto
-import com.example.equipouno.view.retos.RetosActivity
-import com.example.equipouno.viewmodel.RetosViewModel
 
 class RetosAdapter(
-    private val viewModel: RetosViewModel,  // Para las operaciones de base de datos
-    private val onEditClick: (Reto) -> Unit  // Para manejar el click de edición
+    private val onEditClick: (Reto) -> Unit,  // Para manejar el click de edición
+    private val onDeleteClick: (Reto) -> Unit // Para manejar el click de eliminación
 ) : ListAdapter<Reto, RetosAdapter.RetoViewHolder>(RetoDiffCallback()) {
 
     class RetoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,26 +31,28 @@ class RetosAdapter(
 
     override fun onBindViewHolder(holder: RetoViewHolder, position: Int) {
         val reto = getItem(position)
-
-        // Configurar el texto de la descripción
         holder.descripcionReto.text = reto.descripcion
+        Log.d("RetosAdapter", "Mostrando reto en posición $position: ${reto.descripcion}")
+
 
         // Click en el botón editar
         holder.btnEditar.setOnClickListener {
-            onEditClick(reto)  // Llama al callback de edición
+            onEditClick(reto)
         }
 
         // Click en el botón eliminar
-// Click en el botón eliminar
         holder.btnEliminar.setOnClickListener {
-            (holder.itemView.context as? RetosActivity)?.mostrarCuadroDialogoEliminarReto(reto)
+            onDeleteClick(reto)
         }
-
     }
 }
 
 class RetoDiffCallback : DiffUtil.ItemCallback<Reto>() {
-    override fun areItemsTheSame(oldItem: Reto, newItem: Reto): Boolean = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: Reto, newItem: Reto): Boolean = oldItem == newItem
-}
+    override fun areItemsTheSame(oldItem: Reto, newItem: Reto): Boolean {
+        return oldItem.id == newItem.id // Compara por ID
+    }
 
+    override fun areContentsTheSame(oldItem: Reto, newItem: Reto): Boolean {
+        return oldItem == newItem // Compara todo el contenido del objeto
+    }
+}
