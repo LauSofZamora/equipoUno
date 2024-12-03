@@ -22,16 +22,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.equipouno.R
 import com.example.equipouno.view.instrucciones.InstruccionesActivity
 import com.example.equipouno.view.login.LoginActivity
 import com.example.equipouno.view.retos.RetosActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.squareup.picasso.Picasso
 import kotlin.random.Random
 import com.example.equipouno.viewmodel.HomeViewModel
+import com.example.equipouno.viewmodel.PokeViewModel
 
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: HomeViewModel
+    private lateinit var pokeViewModel: PokeViewModel
     private lateinit var timerText: TextView
     private lateinit var bottleImage: ImageView
     private lateinit var blinkingButton: Button
@@ -285,6 +293,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showCustomDialog() {
+        if (isDestroyed || isFinishing) return
+
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_custom)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -300,6 +310,27 @@ class HomeActivity : AppCompatActivity() {
         viewModel.getRandomReto { reto ->
             txtReto.text = reto
         }
+
+        // Obtener la URL de la imagen (aquí debes adaptar cómo obtienes la URL)
+        val pokemonImageView = dialog.findViewById<ImageView>(R.id.circleImageView)
+
+        // Usar Picasso para cargar la imagen en el ImageView
+        // Usar Coroutine para consumir la API
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val imagenUrl: String = pokeViewModel.fetchPokemons() ?: ""
+                if (imagenUrl.isNotEmpty()) {
+                    Picasso.get()
+                        .load(imagenUrl)
+                        .into(pokemonImageView)
+                } else {
+                    pokemonImageView.setImageResource(R.drawable.ic_launcher_foreground)
+                }
+            } catch (e: Exception) {
+                pokemonImageView.setImageResource(R.drawable.ic_launcher_foreground) // Imagen predeterminada en caso de error
+            }
+        }
+
 
         val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)
         btnDismiss.setOnClickListener {

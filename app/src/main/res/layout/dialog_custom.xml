@@ -17,9 +17,7 @@
             android:id="@+id/circleImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/circle_background"
-            android:scaleType="centerCrop"
-            android:translationY="-20dp"/>
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/dialogTitle"
