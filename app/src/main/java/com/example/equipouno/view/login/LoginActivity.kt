@@ -24,17 +24,11 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializa el binding
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Inicializa SessionManager
         sessionManager = SessionManager(this)
-
-        // Verifica si hay una sesión activa
         checkSession()
 
-        // Configura listeners
         setupListeners()
     }
 

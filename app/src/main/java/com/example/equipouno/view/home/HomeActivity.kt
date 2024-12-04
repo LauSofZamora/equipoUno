@@ -41,8 +41,8 @@ import com.example.equipouno.Utilitis.SessionManager
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
-    private val homeViewModel: HomeViewModel by viewModels() // Inyección automática con Hilt
-    private val pokeViewModel: PokeViewModel by viewModels() // Inyección
+    private val homeViewModel: HomeViewModel by viewModels()
+    private val pokeViewModel: PokeViewModel by viewModels()
     private lateinit var viewModel: HomeViewModel
     private lateinit var timerText: TextView
     private lateinit var bottleImage: ImageView
@@ -51,17 +51,15 @@ class HomeActivity : AppCompatActivity() {
     private var spinDirection = 0f
     private lateinit var blinkHandler: Handler
     private lateinit var blinkRunnable: Runnable
-    private var mediaPlayer: MediaPlayer? = null // MediaPlayer para el sonido de fondo
-    private var isMuted = false // Variable para rastrear el estado de muteo
-    private var bottleSpinPlayer: MediaPlayer? =
-        null // MediaPlayer para el sonido de la botella girando
+    private var mediaPlayer: MediaPlayer? = null
+    private var isMuted = false
+    private var bottleSpinPlayer: MediaPlayer? = null
 
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-
 
         val sessionManager = SessionManager(this)
 
@@ -138,8 +136,6 @@ class HomeActivity : AppCompatActivity() {
         mediaPlayer?.start() // Iniciar reproducción
     }
 
-
-
     private fun openPlayStore() {
         val playStoreUrl =
             "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es&pli=1"
@@ -189,15 +185,15 @@ class HomeActivity : AppCompatActivity() {
 
     private fun animateTouch(view: View) {
         val scaleDown = ScaleAnimation(
-            0.9f,  // Inicio de la escala X
-            1.0f,  // Fin de la escala X
-            0.9f,  // Inicio de la escala Y
-            1.0f,  // Fin de la escala Y
+            0.9f,
+            1.0f,
+            0.9f,
+            1.0f,
             Animation.RELATIVE_TO_SELF, 0.5f, // Pivot X (centro)
             Animation.RELATIVE_TO_SELF, 0.5f  // Pivot Y (centro)
         ).apply {
-            duration = 200 // Duración de la animación en milisegundos
-            fillAfter = true // Mantiene la vista en su escala final
+            duration = 200
+            fillAfter = true
         }
         view.startAnimation(scaleDown)
     }
@@ -238,41 +234,39 @@ class HomeActivity : AppCompatActivity() {
         fadeOut.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 if (blinkingButton.visibility == View.VISIBLE) {
-                    fadeIn.start() // Iniciar fadeIn solo si el botón está visible
+                    fadeIn.start()
                 }
             }
         })
         fadeIn.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 if (blinkingButton.visibility == View.VISIBLE) {
-                    fadeOut.start() // Iniciar fadeOut solo si el botón está visible
+                    fadeOut.start()
                 }
             }
         })
-        fadeOut.start() // Iniciar el ciclo con fadeOut
+        fadeOut.start()
     }
 
     private fun startSpinning() {
         isSpinning = true
-        blinkingButton.clearAnimation() // Detener animación del botón
-        blinkingButton.visibility = View.GONE // Ocultar el botón
-        val spinDuration = Random.nextInt(3000, 5000).toLong() // Duración aleatoria
-        val spinAmount = Random.nextFloat() * 2080 + 1200 // Grados de giro
+        blinkingButton.clearAnimation()
+        blinkingButton.visibility = View.GONE
+        val spinDuration = Random.nextInt(3000, 5000).toLong()
+        val spinAmount = Random.nextFloat() * 2080 + 1200
         // Pausar música de fondo si está sonando
         if (mediaPlayer?.isPlaying == true) {
             mediaPlayer?.pause()
         }
-        playBottleSpinSound() // Reproducir sonido de la botella girando
+        playBottleSpinSound()
         ObjectAnimator.ofFloat(bottleImage, "rotation", spinDirection, spinDirection + spinAmount)
             .apply {
                 duration = spinDuration
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         spinDirection =
-                            (spinDirection + spinAmount) % 360 // Actualizar la dirección
-                        stopBottleSpinSound() // Detener sonido de la botella
-                        // **Elimina la reanudación automática de la música aquí.**
-                        // Solo se reanuda en el diálogo.
+                            (spinDirection + spinAmount) % 360
+                        stopBottleSpinSound()
                         showCountdown() // Mostrar la cuenta regresiva
                     }
                 })
@@ -305,12 +299,11 @@ class HomeActivity : AppCompatActivity() {
                     timerText.text = count.toString()
                     handler.postDelayed(this, 1000)
                 } else {
-                    timerText.visibility = View.GONE // Ocultar el texto
-                    blinkingButton.visibility = View.VISIBLE // Mostrar el botón de nuevo
-                    startBlinkingButton() // Reiniciar el parpadeo
-                    isSpinning = false // Permitir otro giro
+                    timerText.visibility = View.GONE
+                    blinkingButton.visibility = View.VISIBLE
+                    startBlinkingButton()
+                    isSpinning = false
 
-                    // Mostrar el diálogo después del conteo
                     showCustomDialog()
                 }
             }
@@ -344,27 +337,17 @@ class HomeActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // Realizamos la llamada a la API
                 val response: Response<pokemonResponse> = ApiUtils.getApiService().getPokemons()
 
                 if (response.isSuccessful) {
-                    // Si la respuesta es exitosa, obtenemos la lista de Pokémon
                     val pokemonList = response.body()?.pokemonList
 
                     if (pokemonList != null && pokemonList.isNotEmpty()) {
-                        // Seleccionar un Pokémon aleatorio
                         val randomIndex = Random.nextInt(pokemonList.size)
                         val randomPokemon = pokemonList[randomIndex]
                         val imagenUrl = randomPokemon.img
                         val imagenUrlHttps = imagenUrl.replaceFirst("http", "https")
 
-                        // Cargar la imagen con Picasso
-//                        Picasso.get()
-//                            .load(imagenUrlHttps)
-//                            .error(R.drawable.ic_launcher_foreground)
-//                            .resize(105, 105) // Redimensionar imagen
-//                            .centerCrop()     // Asegurarse de que la imagen no se distorsione
-//                            .into(pokemonImageView)
                         val pokemonImageView = dialog.findViewById<ImageView>(R.id.circleImageView)
 
                         Picasso.get()
@@ -375,15 +358,12 @@ class HomeActivity : AppCompatActivity() {
                             .centerCrop()
                             .into(pokemonImageView)
 
-                        // Imprimir detalles del Pokémon seleccionado (solo como ejemplo)
                         println("Pokemon: Image: ${randomPokemon.img}")
                     }
                 } else {
-                    // Maneja el error si la respuesta no es exitosa
                     println("Error: ${response.code()}")
                 }
             } catch (e: Exception) {
-                // Maneja cualquier excepción que pueda ocurrir durante la llamada
                 println("Exception: ${e.message}")
             }
         }

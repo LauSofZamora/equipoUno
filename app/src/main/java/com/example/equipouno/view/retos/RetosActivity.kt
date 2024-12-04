@@ -84,7 +84,6 @@ class RetosActivity : AppCompatActivity() {
             .setCancelable(false)
             .create()
 
-        // Monitorear cambios en el texto
         etDescripcionReto.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -174,28 +173,25 @@ class RetosActivity : AppCompatActivity() {
         val btnNo = dialogView.findViewById<TextView>(R.id.btn_no)
         val btnSi = dialogView.findViewById<TextView>(R.id.btn_si)
 
-        // Criterio 3: Mostrar la descripción del reto
         tvDescripcionReto.text = "¿Estás seguro de que quieres eliminar el reto: '${reto.descripcion}'?"
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
-            .setCancelable(false) // Criterio 6: No se puede cerrar al tocar fuera del cuadro
+            .setCancelable(false)
             .create()
 
-        // Criterio 4: Configurar el botón "NO"
         btnNo.apply {
-            setTextColor(resources.getColor(android.R.color.holo_orange_dark)) // Texto "NO" en color naranja
+            setTextColor(resources.getColor(android.R.color.holo_orange_dark))
             setOnClickListener {
-                dialog.dismiss() // Cerrar el cuadro de diálogo
+                dialog.dismiss()
             }
         }
 
-        // Criterio 5: Configurar el botón "SI"
         btnSi.apply {
-            setTextColor(resources.getColor(android.R.color.holo_orange_dark)) // Texto "SI" en color naranja
+            setTextColor(resources.getColor(android.R.color.holo_orange_dark))
             setOnClickListener {
-                viewModel.eliminarReto(reto) // Eliminar reto de la base de datos
-                dialog.dismiss() // Cerrar el cuadro de diálogo
+                viewModel.eliminarReto(reto)
+                dialog.dismiss()
             }
         }
 

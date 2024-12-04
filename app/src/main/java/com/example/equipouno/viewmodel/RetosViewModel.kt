@@ -20,7 +20,6 @@ class RetosViewModel @Inject constructor(
     private val _retos = MutableLiveData<List<Reto>>()
     val retos: LiveData<List<Reto>> get() = _retos
 
-    // Cargar los retos desde Firebase Firestore
     fun cargarRetos() {
         firestore.collection("retos").get()
             .addOnSuccessListener { result ->
@@ -31,8 +30,8 @@ class RetosViewModel @Inject constructor(
                         descripcion = descripcion
                     )
                 }
-                // Asegúrate de agregar el nuevo reto al principio
-                _retos.value = listaRetos.reversed()  // Invertir la lista para que los nuevos retos estén al principio
+
+                _retos.value = listaRetos.reversed()
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
@@ -41,15 +40,13 @@ class RetosViewModel @Inject constructor(
     }
 
 
-    // Agregar un nuevo reto a Firestore
     fun agregarReto(descripcion: String) {
         viewModelScope.launch {
             val nuevoReto = hashMapOf("descripcion" to descripcion)
             retosCollection.add(nuevoReto)
                 .addOnSuccessListener { documentReference ->
-                    // Crear un objeto Reto y agregarlo al inicio de la lista
                     val reto = Reto(id = documentReference.id, descripcion = descripcion)
-                    val updatedList = listOf(reto) + _retos.value.orEmpty()  // Agregar al inicio
+                    val updatedList = listOf(reto) + _retos.value.orEmpty()
                     _retos.value = updatedList
                 }
                 .addOnFailureListener { e ->
@@ -59,30 +56,27 @@ class RetosViewModel @Inject constructor(
     }
 
 
-    // Editar un reto existente
     fun editarReto(reto: Reto, nuevaDescripcion: String) {
         viewModelScope.launch {
             retosCollection.document(reto.id)
-                .update("descripcion", nuevaDescripcion) // Actualiza el campo "descripcion"
+                .update("descripcion", nuevaDescripcion)
                 .addOnSuccessListener {
-                    cargarRetos() // Recargar la lista de retos
+                    cargarRetos()
                 }
                 .addOnFailureListener { e ->
-                    e.printStackTrace() // Maneja cualquier error
+                    e.printStackTrace()
                 }
         }
     }
 
-    // Eliminar un reto
     fun eliminarReto(reto: Reto) {
         viewModelScope.launch {
-            retosCollection.document(reto.id).delete() // Eliminar el reto de la base de datos
+            retosCollection.document(reto.id).delete()
                 .addOnSuccessListener {
-                    // Eliminar el reto de la lista local
                     _retos.value = _retos.value?.filter { it.id != reto.id }
                 }
                 .addOnFailureListener { e ->
-                    e.printStackTrace() // Manejar cualquier error
+                    e.printStackTrace()
                 }
         }
     }

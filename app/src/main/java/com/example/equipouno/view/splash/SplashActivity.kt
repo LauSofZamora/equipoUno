@@ -7,10 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import com.example.equipouno.R
-import com.example.equipouno.view.home.HomeActivity
 import com.example.equipouno.view.login.LoginActivity
 import com.example.equipouno.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -13,10 +13,10 @@ class InstruccionesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInstruccionesBinding.inflate(layoutInflater)
-        setContentView(binding.root) // Usa binding.root para establecer el layout
+        setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar3)
-        supportActionBar?.title = "" // Elimina el título de la Toolbar
+        supportActionBar?.title = ""
 
         // Define la acción al presionar el botón "Atrás"
         binding.btnBack.setOnClickListener {
@@ -25,8 +25,8 @@ class InstruccionesActivity : AppCompatActivity() {
 
         // Inicializa y controla la animación
         val lottieAnimationView: LottieAnimationView = binding.lottieAnimationView
-        lottieAnimationView.setAnimation("celebration.json") // Archivo JSON desde assets
-        lottieAnimationView.playAnimation() // Inicia la animación
-        lottieAnimationView.loop(true) // Repetir la animación
+        lottieAnimationView.setAnimation("celebration.json")
+        lottieAnimationView.playAnimation()
+        lottieAnimationView.loop(true)
     }
 }

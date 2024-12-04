@@ -20,7 +20,6 @@ class SplashViewModel @Inject constructor() : ViewModel() {
         startSplashTimer()
     }
 
-
     private fun startSplashTimer() {
         viewModelScope.launch {
             Log.d("SplashViewModel", "Timer started")
