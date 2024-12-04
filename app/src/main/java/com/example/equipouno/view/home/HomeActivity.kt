@@ -39,6 +39,7 @@ import kotlin.random.Random
 import com.example.equipouno.viewmodel.HomeViewModel
 import com.example.equipouno.viewmodel.PokeViewModel
 import retrofit2.Response
+import com.example.equipouno.Utilitis.SessionManager
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: HomeViewModel
@@ -60,11 +61,23 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        val sessionManager = SessionManager(this)
+
         val logoutButton = findViewById<ImageView>(R.id.ic_logout)
         logoutButton.setOnClickListener {
+            // Limpiar la sesión
+            sessionManager.clearSession()
+
+            // Redirigir al LoginActivity
             val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+
+            // Animación al tocar el botón
             animateTouch(logoutButton)
+
+            // Mensaje de confirmación
+            Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
         }
 
         val start: ImageView = findViewById(R.id.ic_star)
@@ -72,50 +85,58 @@ class HomeActivity : AppCompatActivity() {
             openPlayStore()
             animateTouch(start)
         }
+
         val volumeIcon: ImageView = findViewById(R.id.ic_volume_high)
         volumeIcon.setOnClickListener {
             toggleMusic()
             animateTouch(volumeIcon)
         }
+
         val controllerIcon: ImageView = findViewById(R.id.ic_controller)
         controllerIcon.setOnClickListener {
-            // Redirigir a la actividad gris oscuro
             val intent = Intent(this, InstruccionesActivity::class.java)
             startActivity(intent)
             animateTouch(controllerIcon)
         }
+
         val addIcon: ImageView = findViewById(R.id.ic_add)
         addIcon.setOnClickListener {
-            // Redirigir a la actividad gris oscuro
             val intent = Intent(this, RetosActivity::class.java)
             startActivity(intent)
             animateTouch(addIcon)
         }
+
         val shareIcon: ImageView = findViewById(R.id.ic_share)
         shareIcon.setOnClickListener {
             shareContent()
             animateTouch(shareIcon)
         }
+
         // Configura la Toolbar
         val toolbar: Toolbar = findViewById(R.id.customToolbar)
         setSupportActionBar(toolbar)
+
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
         // Conectar los elementos de la UI
         timerText = findViewById(R.id.timerText)
         bottleImage = findViewById(R.id.bottleImage)
         blinkingButton = findViewById(R.id.blinkingButton)
+
         startBlinkingButton() // Iniciar el parpadeo del botón
         blinkingButton.setOnClickListener {
             if (!isSpinning) {
                 startSpinning()
             }
         }
+
         // Iniciar el sonido de fondo
-        mediaPlayer =
-            MediaPlayer.create(this, R.raw.background_music) // Archivo de sonido en res/raw
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_music)
         mediaPlayer?.isLooping = true // Para que se repita en bucle
         mediaPlayer?.start() // Iniciar reproducción
     }
+
+
 
     private fun openPlayStore() {
         val playStoreUrl =

@@ -10,12 +10,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.equipouno.databinding.ActivityLoginBinding
+import com.example.equipouno.Utilitis.SessionManager
 import com.example.equipouno.view.home.HomeActivity
 import com.example.equipouno.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val loginViewModel: LoginViewModel by viewModels()
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +26,22 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Inicializa SessionManager
+        sessionManager = SessionManager(this)
+
+        // Verifica si hay una sesión activa
+        checkSession()
+
         // Configura listeners
         setupListeners()
+    }
+
+    private fun checkSession() {
+        val userEmail = sessionManager.getUserEmail()
+        if (userEmail != null) {
+            // Si hay un email guardado en la sesión, redirige a Home
+            goToHome(userEmail)
+        }
     }
 
     private fun setupListeners() {
@@ -85,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.registerUser(email, pass) { isRegister ->
             if (isRegister) {
+                sessionManager.saveUserEmail(email) // Guarda la sesión
                 goToHome(email)
             } else {
                 Toast.makeText(this, "Error en el registro", Toast.LENGTH_SHORT).show()
@@ -93,9 +110,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginUser(email: String, pass: String) {
-        // Aquí puedes agregar la lógica de login
         loginViewModel.loginUser(email, pass) { isLoginSuccessful ->
             if (isLoginSuccessful) {
+                sessionManager.saveUserEmail(email) // Guarda la sesión
                 goToHome(email)
             } else {
                 Toast.makeText(this, "Login fallido, revisa tus credenciales", Toast.LENGTH_SHORT).show()
