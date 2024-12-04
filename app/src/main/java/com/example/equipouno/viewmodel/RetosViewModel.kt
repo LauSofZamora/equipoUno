@@ -76,13 +76,15 @@ class RetosViewModel @Inject constructor(
     // Eliminar un reto
     fun eliminarReto(reto: Reto) {
         viewModelScope.launch {
-            retosCollection.document(reto.id).delete() // Elimina el reto
+            retosCollection.document(reto.id).delete() // Eliminar el reto de la base de datos
                 .addOnSuccessListener {
-                    cargarRetos() // Recargar la lista de retos
+                    // Eliminar el reto de la lista local
+                    _retos.value = _retos.value?.filter { it.id != reto.id }
                 }
                 .addOnFailureListener { e ->
-                    e.printStackTrace() // Maneja cualquier error
+                    e.printStackTrace() // Manejar cualquier error
                 }
         }
     }
+
 }
