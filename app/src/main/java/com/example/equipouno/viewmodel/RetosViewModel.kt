@@ -25,14 +25,14 @@ class RetosViewModel @Inject constructor(
         firestore.collection("retos").get()
             .addOnSuccessListener { result ->
                 val listaRetos = result.documents.map { doc ->
-                    // Obtener la descripcion de manera segura y convertirlo a String
                     val descripcion = doc.getString("descripcion") ?: "Sin descripción"
                     Reto(
                         id = doc.id,
                         descripcion = descripcion
                     )
                 }
-                _retos.value = listaRetos
+                // Asegúrate de agregar el nuevo reto al principio
+                _retos.value = listaRetos.reversed()  // Invertir la lista para que los nuevos retos estén al principio
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
@@ -40,19 +40,24 @@ class RetosViewModel @Inject constructor(
             }
     }
 
+
     // Agregar un nuevo reto a Firestore
     fun agregarReto(descripcion: String) {
         viewModelScope.launch {
             val nuevoReto = hashMapOf("descripcion" to descripcion)
-            retosCollection.add(nuevoReto) // Agrega un nuevo reto a la colección
-                .addOnSuccessListener {
-                    cargarRetos() // Recargar la lista de retos
+            retosCollection.add(nuevoReto)
+                .addOnSuccessListener { documentReference ->
+                    // Crear un objeto Reto y agregarlo al inicio de la lista
+                    val reto = Reto(id = documentReference.id, descripcion = descripcion)
+                    val updatedList = listOf(reto) + _retos.value.orEmpty()  // Agregar al inicio
+                    _retos.value = updatedList
                 }
                 .addOnFailureListener { e ->
-                    e.printStackTrace() // Maneja cualquier error
+                    e.printStackTrace()
                 }
         }
     }
+
 
     // Editar un reto existente
     fun editarReto(reto: Reto, nuevaDescripcion: String) {
