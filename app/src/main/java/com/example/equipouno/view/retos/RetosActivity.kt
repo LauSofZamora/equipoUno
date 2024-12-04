@@ -1,7 +1,6 @@
 package com.example.equipouno.view.retos
 
 import RetosAdapter
-import RetosViewModel
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,10 +16,11 @@ import com.example.equipouno.databinding.ActivityRetosBinding
 import com.example.equipouno.model.Reto
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.util.Log
 import android.widget.TextView
+import com.example.equipouno.viewmodel.RetosViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RetosActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRetosBinding

@@ -13,7 +13,9 @@ import com.example.equipouno.databinding.ActivityLoginBinding
 import com.example.equipouno.Utilitis.SessionManager
 import com.example.equipouno.view.home.HomeActivity
 import com.example.equipouno.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val loginViewModel: LoginViewModel by viewModels()

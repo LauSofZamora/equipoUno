@@ -1,15 +1,21 @@
+package com.example.equipouno.viewmodel
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.equipouno.model.Reto
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RetosViewModel : ViewModel() {
+@HiltViewModel
+class RetosViewModel @Inject constructor(
+    private val firestore: FirebaseFirestore
+) : ViewModel() {
 
-    private val firestore = FirebaseFirestore.getInstance()
-    private val retosCollection = firestore.collection("retos") // Referencia a la colección "retos"
+    private val retosCollection = firestore.collection("retos")
 
     private val _retos = MutableLiveData<List<Reto>>()
     val retos: LiveData<List<Reto>> get() = _retos
@@ -33,8 +39,6 @@ class RetosViewModel : ViewModel() {
                 _retos.value = emptyList()
             }
     }
-
-
 
     // Agregar un nuevo reto a Firestore
     fun agregarReto(descripcion: String) {

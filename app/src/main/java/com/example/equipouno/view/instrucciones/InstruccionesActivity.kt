@@ -1,15 +1,12 @@
 package com.example.equipouno.view.instrucciones
 
-
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import com.example.equipouno.R
 import com.example.equipouno.databinding.ActivityInstruccionesBinding
 import com.airbnb.lottie.LottieAnimationView
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class InstruccionesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInstruccionesBinding
 

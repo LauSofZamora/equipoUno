@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
@@ -20,6 +19,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
@@ -30,20 +30,20 @@ import com.example.equipouno.data.pokemonDTO.pokemonResponse
 import com.example.equipouno.view.instrucciones.InstruccionesActivity
 import com.example.equipouno.view.login.LoginActivity
 import com.example.equipouno.view.retos.RetosActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import com.squareup.picasso.Picasso
 import kotlin.random.Random
 import com.example.equipouno.viewmodel.HomeViewModel
 import com.example.equipouno.viewmodel.PokeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Response
 import com.example.equipouno.Utilitis.SessionManager
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
+    private val homeViewModel: HomeViewModel by viewModels() // Inyección automática con Hilt
+    private val pokeViewModel: PokeViewModel by viewModels() // Inyección
     private lateinit var viewModel: HomeViewModel
-    private lateinit var pokeViewModel: PokeViewModel
     private lateinit var timerText: TextView
     private lateinit var bottleImage: ImageView
     private lateinit var blinkingButton: Button
@@ -60,6 +60,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
 
         val sessionManager = SessionManager(this)
 
@@ -331,7 +333,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Obtener y mostrar el reto aleatorio
         val txtReto = dialog.findViewById<TextView>(R.id.dialogTitle)
-        viewModel.getRandomReto { reto ->
+        viewModel?.getRandomReto { reto ->
             txtReto.text = reto
         }
 

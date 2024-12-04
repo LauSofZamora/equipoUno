@@ -3,10 +3,14 @@ package com.example.equipouno.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.equipouno.ServicesWeb.ApiUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class PokeViewModel: ViewModel() {
+@HiltViewModel
+class PokeViewModel @Inject constructor() : ViewModel() {
+
     private val apiService = ApiUtils.getApiService()
 
     suspend fun fetchPokemons(): String {
@@ -27,5 +31,4 @@ class PokeViewModel: ViewModel() {
             }
         }
     }
-
 }
