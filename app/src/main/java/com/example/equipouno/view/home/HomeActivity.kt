@@ -325,6 +325,9 @@ class HomeActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_custom)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+        // Deshabilitar cierre al tocar fuera del diálogo
+        dialog.setCanceledOnTouchOutside(false)
+
         // Pausar la música si está sonando
         wasPlayingBeforeDialog = mediaPlayer?.isPlaying == true
         if (mediaPlayer?.isPlaying == true) {
@@ -337,11 +340,8 @@ class HomeActivity : AppCompatActivity() {
             txtReto.text = reto
         }
 
-        // Obtener la URL de la imagen (aquí debes adaptar cómo obtienes la URL)
         val pokemonImageView = dialog.findViewById<ImageView>(R.id.circleImageView)
 
-        // Usar Picasso para cargar la imagen en el ImageView
-        // Usar Coroutine para consumir la API
         lifecycleScope.launch {
             try {
                 // Realizamos la llamada a la API
@@ -359,11 +359,20 @@ class HomeActivity : AppCompatActivity() {
                         val imagenUrlHttps = imagenUrl.replaceFirst("http", "https")
 
                         // Cargar la imagen con Picasso
+//                        Picasso.get()
+//                            .load(imagenUrlHttps)
+//                            .error(R.drawable.ic_launcher_foreground)
+//                            .resize(105, 105) // Redimensionar imagen
+//                            .centerCrop()     // Asegurarse de que la imagen no se distorsione
+//                            .into(pokemonImageView)
+                        val pokemonImageView = dialog.findViewById<ImageView>(R.id.circleImageView)
+
                         Picasso.get()
                             .load(imagenUrlHttps)
+                            .placeholder(R.drawable.ic_launcher_foreground)
                             .error(R.drawable.ic_launcher_foreground)
-                            .resize(10, 10) // Redimensionar imagen
-                            .centerCrop()     // Asegurarse de que la imagen no se distorsione
+                            .resize(135, 135)
+                            .centerCrop()
                             .into(pokemonImageView)
 
                         // Imprimir detalles del Pokémon seleccionado (solo como ejemplo)
@@ -392,7 +401,6 @@ class HomeActivity : AppCompatActivity() {
         }
         dialog.show()
     }
-
 
     private var wasPlayingBeforeDialog = false // Variable para rastrear el estado antes del diálogo
 }

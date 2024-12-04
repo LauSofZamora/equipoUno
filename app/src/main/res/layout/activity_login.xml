@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/black"
+    android:background="@drawable/background_black"
     android:padding="16dp"
     android:gravity="center">
     <!-- Título -->
@@ -22,7 +22,6 @@
     <!-- Campo de Email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/email"
@@ -91,11 +90,12 @@
         android:textSize="16sp"
         android:textStyle="normal" />
     <!-- Espaciador -->
+    <!-- Imagen de onda -->
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1" />
-    <!-- Imagen de onda -->
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
