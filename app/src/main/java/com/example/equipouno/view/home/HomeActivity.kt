@@ -327,18 +327,24 @@ class HomeActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     // Si la respuesta es exitosa, obtenemos la lista de Pokémon
                     val pokemonList = response.body()?.pokemonList
-                    val imagenUrl = "http://www.serebii.net/pokemongo/pokemon/001.png"
-                    val imagenUrlHttps = imagenUrl.replaceFirst("http", "https")
-                    Picasso.get()
-                        .load(imagenUrlHttps)
-                        .error(R.drawable.ic_launcher_foreground)
-                        .resize(20, 20) // Redimensionar imagen
-                        .centerCrop()     // Asegurarse de que la imagen no se distorsione
-                        .into(pokemonImageView)
-                    // Aquí puedes manejar los datos, por ejemplo, mostrando las imágenes en una lista
-                    pokemonList?.forEach { pokemon ->
-                        // Por ejemplo, puedes obtener el nombre y la imagen
-                        println("Pokemon:  Image: ${pokemon.img}")
+
+                    if (pokemonList != null && pokemonList.isNotEmpty()) {
+                        // Seleccionar un Pokémon aleatorio
+                        val randomIndex = Random.nextInt(pokemonList.size)
+                        val randomPokemon = pokemonList[randomIndex]
+                        val imagenUrl = randomPokemon.img
+                        val imagenUrlHttps = imagenUrl.replaceFirst("http", "https")
+
+                        // Cargar la imagen con Picasso
+                        Picasso.get()
+                            .load(imagenUrlHttps)
+                            .error(R.drawable.ic_launcher_foreground)
+                            .resize(10, 10) // Redimensionar imagen
+                            .centerCrop()     // Asegurarse de que la imagen no se distorsione
+                            .into(pokemonImageView)
+
+                        // Imprimir detalles del Pokémon seleccionado (solo como ejemplo)
+                        println("Pokemon: Image: ${randomPokemon.img}")
                     }
                 } else {
                     // Maneja el error si la respuesta no es exitosa
@@ -349,8 +355,6 @@ class HomeActivity : AppCompatActivity() {
                 println("Exception: ${e.message}")
             }
         }
-
-
 
         val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)
         btnDismiss.setOnClickListener {
@@ -365,6 +369,7 @@ class HomeActivity : AppCompatActivity() {
         }
         dialog.show()
     }
+
 
     private var wasPlayingBeforeDialog = false // Variable para rastrear el estado antes del diálogo
 }
