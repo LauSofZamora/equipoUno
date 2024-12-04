@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
@@ -24,6 +25,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.equipouno.R
+import com.example.equipouno.ServicesWeb.ApiUtils
+import com.example.equipouno.data.pokemonDTO.pokemonResponse
 import com.example.equipouno.view.instrucciones.InstruccionesActivity
 import com.example.equipouno.view.login.LoginActivity
 import com.example.equipouno.view.retos.RetosActivity
@@ -35,7 +38,7 @@ import com.squareup.picasso.Picasso
 import kotlin.random.Random
 import com.example.equipouno.viewmodel.HomeViewModel
 import com.example.equipouno.viewmodel.PokeViewModel
-
+import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: HomeViewModel
@@ -316,20 +319,37 @@ class HomeActivity : AppCompatActivity() {
 
         // Usar Picasso para cargar la imagen en el ImageView
         // Usar Coroutine para consumir la API
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch {
             try {
-                val imagenUrl: String = pokeViewModel.fetchPokemons() ?: ""
-                if (imagenUrl.isNotEmpty()) {
+                // Realizamos la llamada a la API
+                val response: Response<pokemonResponse> = ApiUtils.getApiService().getPokemons()
+
+                if (response.isSuccessful) {
+                    // Si la respuesta es exitosa, obtenemos la lista de Pokémon
+                    val pokemonList = response.body()?.pokemonList
+                    val imagenUrl = "http://www.serebii.net/pokemongo/pokemon/001.png"
+                    val imagenUrlHttps = imagenUrl.replaceFirst("http", "https")
                     Picasso.get()
-                        .load(imagenUrl)
+                        .load(imagenUrlHttps)
+                        .error(R.drawable.ic_launcher_foreground)
+                        .resize(20, 20) // Redimensionar imagen
+                        .centerCrop()     // Asegurarse de que la imagen no se distorsione
                         .into(pokemonImageView)
+                    // Aquí puedes manejar los datos, por ejemplo, mostrando las imágenes en una lista
+                    pokemonList?.forEach { pokemon ->
+                        // Por ejemplo, puedes obtener el nombre y la imagen
+                        println("Pokemon:  Image: ${pokemon.img}")
+                    }
                 } else {
-                    pokemonImageView.setImageResource(R.drawable.ic_launcher_foreground)
+                    // Maneja el error si la respuesta no es exitosa
+                    println("Error: ${response.code()}")
                 }
             } catch (e: Exception) {
-                pokemonImageView.setImageResource(R.drawable.ic_launcher_foreground) // Imagen predeterminada en caso de error
+                // Maneja cualquier excepción que pueda ocurrir durante la llamada
+                println("Exception: ${e.message}")
             }
         }
+
 
 
         val btnDismiss = dialog.findViewById<Button>(R.id.btnDismiss)

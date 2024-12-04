@@ -6,20 +6,19 @@ import com.example.equipouno.ServicesWeb.ApiUtils
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 
-class PokeViewModel {
+class PokeViewModel: ViewModel() {
     private val apiService = ApiUtils.getApiService()
 
     suspend fun fetchPokemons(): String {
         return withContext(Dispatchers.IO) {
-            // Supongamos que tienes un Retrofit service configurado
             try {
-                val response = apiService.getPokemons() // Llamada suspendida
+                val response = apiService.getPokemons()
                 if (response.isSuccessful) {
-                    // Si la respuesta es exitosa, devuelve la URL de la primera imagen
                     val pokemon = response.body()?.pokemonList?.randomOrNull()
-                    pokemon?.imagenUrl ?: "No image found" // Devolver un valor predeterminado si no hay imagen
+                    Log.d("Pokemon Info", "Pokemon: $pokemon")  // Verifica si el Pokémon es null o no
+                    pokemon?.img ?: "No image found"
                 } else {
-                    Log.e("Error", "Error al obtener datos del Pokémon")
+                    Log.e("Error", "Error al obtener el Pokémon")
                     "Error en la respuesta"
                 }
             } catch (e: Exception) {

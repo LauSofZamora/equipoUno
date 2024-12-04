@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class pokemonDTO (
     @SerializedName("img")
-    val imagenUrl: String
+    val img: String
 )
